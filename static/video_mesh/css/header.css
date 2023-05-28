@@ -1,0 +1,51 @@
+header{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    width: 100%;
+}
+nav{
+    display: flex;
+    flex-direction: row;
+    padding: 6px 10px;
+    background: linear-gradient(90deg,rgba(89, 38, 130), rgb(179, 102, 249, .9));
+    background-color: rgba(89, 18, 130);
+    box-shadow: 0px 2px 6px rgba(10, 10, 10, 0.5);
+    color: white;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+nav > div> img{
+    height: 100%;
+    max-width: 45px;
+    width: 100%;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+nav > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+}
+nav > p {
+    margin-right: 8px;
+    align-items: center;
+    justify-content: center;
+}
+@media screen and (max-width: 600px) {
+    nav > p {
+        font-size: small;
+    }
+    nav>div > h2 {
+        font-size: 21px;
+    }
+}

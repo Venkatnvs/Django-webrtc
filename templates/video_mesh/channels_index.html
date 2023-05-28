@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static 'icons/favicon.ico' %}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created by venkat" />
+    <title>Video chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- <script async onload="openCvReady()" src="{% static 'video_mesh/js/opencv.js' %}"></script> -->
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'video_mesh/css/webrtc_mesh.css' %}">
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'video_mesh/css/header.css' %}">
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'video_mesh/css/controls.css' %}">
+</head>
+<body>
+    {% include 'video_mesh/header.html' %}
+    <div class="container-md main_cont_box">
+        <div class="row m-0">
+            <div id="main_par_div" style="display:none;" class="col-md-3 main_partic_div">
+                {% include 'video_mesh/participants.html' %}
+            </div>
+            <div class="col-md-9">
+                <div class="col main_vid_div mt-1">
+                    <div class="container">
+                        <div id="local_cont">
+                            <div id="local_relat" class="local_relat">
+                                <video class="video-player" id="local_stream" autoplay muted playsinline></video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col main_vidot_div">
+                    <div id="col-12">
+                        <div class="row-12 video_pt_head">
+                            <h3>videos</h3>
+                            <!-- <button id="change_vdlt">h</button> -->
+                        </div>
+                        <div class="row-10">
+                            <div id="remoteVideos"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'video_mesh/controls.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'video_mesh/js/main.js' %}"></script>
+    <!-- <script src="{% static 'video_mesh/js/cv2cm.js' %}"></script> -->
+    <script src="{% static 'video_mesh/js/webrtc_mesh.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>PeerChat</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body{
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        
+        #form-container{
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            background-color: #262625;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        
+        #form__container__header {
+            border-radius: 10px 10px 0 0;
+            padding: 30px;
+            text-align: center;
+            background-color: #363739;
+            margin: 0;
+            font-size: 18px;
+            font-size: 300;
+            line-height: 0;
+          }
+        
+          #form__content__wrapper{
+            padding: 20px;
+        }
+        
+        input {
+            box-sizing: border-box;
+            color: #fff;
+            width: 100%;
+            margin: 0;
+            border: none;
+            border-radius: 5px;
+            padding: 16px 20px;
+            font-size: 15px;
+            background-color: #3f434a;
+            margin-top: 32px;
+          }
+         
+         
+          input[type='submit'] {
+            background-color: #845695;
+         
+          }
+    </style>
+</head>
+<body>
+    
+    <main id="lobby-container">
+        <div id="form-container">
+            <div id="form__container__header">
+                <p>👋 Create OR Join a Room</p>
+            </div>
+
+            <div id="form__content__wrapper">
+                <form id="join-form">
+                    <input type="text" name="invite_link" required/>
+                    <input type="submit" value="Join Room" />
+                </form>
+            </div>
+        </div>
+    </main>
+
+
+
+</body>
+
+<script>
+    let form = document.getElementById('join-form')
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        let inviteCode = e.target.invite_link.value
+        window.location = `{% url "dash_vi" %}?id=${inviteCode}` 
+    })
+</script>
+
+</html>
