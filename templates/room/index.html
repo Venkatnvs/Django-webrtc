@@ -1,0 +1,40 @@
+{% extends 'room/base.html' %}
+
+
+{% block title %}
+Join | Create Meet
+{% endblock title %}
+
+
+{% block body %}
+    <div id="main_join_room" class="container">
+        <div id="title_main_rm" class="col">
+            <h4>Join or Create Room</h4>
+        </div>
+        <form action="{% url 'room_join' %}" method="post" id="main_rm_form">
+            {% csrf_token %}
+            <div class="form-group row mt-2">
+                <label class="col-form-label col-sm-2" for="Name_input">Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control" name="username" id="Name_input" type="text" placeholder="John..." required>
+                </div>
+            </div>
+            <div class="form-group row mt-2">
+                <label class="col-form-label col-sm-2" for="Room_input">Room Id</label>
+                <div class="col-sm-10">
+                    <input class="form-control" name="roomid" id="Room_input" type="text" placeholder="123-abc..." required>
+                </div>
+            </div>
+            <div id="submit_btn_rm" class="form-group row my-4">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn">Join</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock body %}
+
+{% block script %}
+    
+{% endblock script %}

@@ -12,11 +12,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- <script async onload="openCvReady()" src="{% static 'video_mesh/js/opencv.js' %}"></script> -->
+    <script async src="https://docs.opencv.org/3.4/opencv.js"></script>
     <link rel='stylesheet' type='text/css' media='screen' href="{% static 'video_mesh/css/webrtc_mesh.css' %}">
     <link rel='stylesheet' type='text/css' media='screen' href="{% static 'video_mesh/css/header.css' %}">
     <link rel='stylesheet' type='text/css' media='screen' href="{% static 'video_mesh/css/controls.css' %}">
+    {{ roomid |json_script:"user_roomid" }}
+    {{ user_namejs |json_script:"user_name" }}
 </head>
 <body>
+    <div style="display: none;">
+        {% comment %} {% include 'video_mesh/filters.html' %} {% endcomment %}
+    </div>
     {% include 'video_mesh/header.html' %}
     <div class="container-md main_cont_box">
         <div class="row m-0">
@@ -25,12 +31,14 @@
             </div>
             <div class="col-md-9">
                 <div class="col main_vid_div mt-1">
+                    {% comment %} <video id="local_stream2" autoplay muted playsinline></video> {% endcomment %}
                     <div class="container">
                         <div id="local_cont">
                             <div id="local_relat" class="local_relat">
                                 <video class="video-player" id="local_stream" autoplay muted playsinline></video>
                             </div>
                         </div>
+                        <button id="convertGray">Convert gray</button>
                     </div>
                 </div>
                 <div class="col main_vidot_div">
@@ -52,5 +60,6 @@
     <script src="{% static 'video_mesh/js/main.js' %}"></script>
     <!-- <script src="{% static 'video_mesh/js/cv2cm.js' %}"></script> -->
     <script src="{% static 'video_mesh/js/webrtc_mesh.js' %}"></script>
+    <!-- <script src="{% static 'video_mesh/js/filters.js' %}"></script> -->
 </body>
 </html>
