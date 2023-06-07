@@ -164,6 +164,7 @@ function start() {
 
   // set up local video stream
   if (navigator.mediaDevices.getUserMedia) {
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     navigator.mediaDevices.getUserMedia(constraints)
       .then(stream => {
         localStream = stream;
@@ -173,7 +174,7 @@ function start() {
 
       // set up websocket and message all existing clients
       .then(() => {
-        serverConnection = new WebSocket('wss://'
+        serverConnection = new WebSocket(ws_scheme+'://'
         + window.location.host
         + '/ws/webrtc/'
         + RoomIdfromHtml

@@ -11,12 +11,12 @@ Join Meeting
         <div id="title_main_rm" class="col">
             <h4>Join Room</h4>
         </div>
-        <form action="{% url 'room_join' %}" method="post" id="main_rm_form">
+        <form action="{% url 'video_ch' roomid %}" method="post" id="main_rm_form">
             {% csrf_token %}
             <div class="form-group row mt-2">
                 <label class="col-form-label col-sm-2" for="Name_input">Name</label>
                 <div class="col-sm-10">
-                    <input class="form-control" name="username" id="Name_input" type="text" placeholder="John..." required>
+                    <input class="form-control" name="username" id="Name_input" type="text" placeholder="Enter your name..." required>
                 </div>
             </div>
             <div id="submit_btn_rm" class="form-group row my-4">
@@ -28,7 +28,3 @@ Join Meeting
         </form>
     </div>
 {% endblock body %}
-
-{% block script %}
-    
-{% endblock script %}

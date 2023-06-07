@@ -9,23 +9,45 @@ def video_p2p(request):
 
 
 def video_p2p_channels(request,room_id):
-    usernamejs=None
-    if request.session.has_key('usernamejs'):
-        usernamejs = request.session['usernamejs']
-    try:
-        useruuid = UUID(room_id)
-    except Exception as e:
-        print(e)
-        useruuid="none"
-        return HttpResponseNotFound('<h1>Page not found 404</h1>')
-    room = Rooms.objects.filter(id=useruuid)
-    if room.exists():
-        room = Rooms.objects.get(id=room_id)
-        context = {
-            'roomid':room.roomid,
-            'user_namejs':usernamejs,
-        }
-        return render(request, 'video_mesh/channels_index.html',context)
+    if request.method == "GET":
+        usernamejs=None
+        if request.session.has_key('usernamejs'):
+            usernamejs = request.session['usernamejs']
+        else:
+            return render(request, 'room/join_room.html',{'roomid':room_id})
+        try:
+            useruuid = UUID(room_id)
+        except Exception as e:
+            print(e)
+            useruuid="none"
+            return HttpResponseNotFound('<h1>Page not found 404</h1>')
+        room = Rooms.objects.filter(id=useruuid)
+        if room.exists():
+            room = Rooms.objects.get(id=room_id)
+            context = {
+                'roomid':room.roomid,
+                'user_namejs':usernamejs,
+            }
+            return render(request, 'video_mesh/channels_index.html',context)
+        else:
+            return HttpResponseNotFound('<h1>Page not found 404</h1>')
+    if request.method == "POST":
+        try:
+            useruuid = UUID(room_id)
+        except Exception as e:
+            print(e)
+            useruuid="none"
+            return HttpResponseNotFound('<h1>Page not found 404</h1>')
+        usernamesd = request.POST['username']
+        room = Rooms.objects.filter(id=useruuid)
+        if room.exists():
+            room = Rooms.objects.get(id=room_id)
+        else:
+            return HttpResponseNotFound('<h1>Page not found 404</h1>')
+        usercr,a = RoomUsers.objects.get_or_create(username=usernamesd,room =room)
+        request.session['usernamejs'] = usercr.username
+        return redirect('video_ch',room_id=room.id)
+
     return HttpResponseNotFound('<h1>Page not found 404</h1>')
 
 
