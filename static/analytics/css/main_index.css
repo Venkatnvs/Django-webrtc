@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    background-color: #2d2d2d;
+    color: #f5f5f5;
+    /* background-color: #f5f5f5; */
+}
+#main_content{
+    margin-top: 66px !important;
+}
+#map {
+    height: 400px;
+}
+#nvs-card-main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+.nvs-card{
+    background-color: #f5f5f5;
+    display: flex;
+    border: 1px solid rgb(0, 0, 0,0.6);
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+    box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    max-height: 500px;
+    width: 100%;
+}
+#main_cd{
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    margin: 3px;
+    margin-bottom: 8px;
+}
+.Heading{
+    display: flex;
+    align-items: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    justify-content: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+}

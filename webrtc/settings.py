@@ -105,7 +105,7 @@ CHANNEL_LAYERS = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://29a9-2401-4900-6301-ed5b-18a9-a1de-6652-c542.ngrok-free.app'
+    'https://a46b-14-99-167-142.ngrok-free.app'
 ]
 
 

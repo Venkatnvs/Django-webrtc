@@ -96,7 +96,7 @@ function trackVisitor() {
   var visitorId = localStorage.getItem('visitorId');
   
   if (!visitorId) {
-    visitorId = generateUniqueId();
+    visitorId = this.crypto.randomUUID();
     localStorage.setItem('visitorId', visitorId);
     uuid_send = visitorId
   }
