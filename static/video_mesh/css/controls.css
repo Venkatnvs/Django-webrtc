@@ -36,6 +36,9 @@
 #leave-btn{
     background-color: rgb(255,80,80, 1);
 }
+canvas {
+    display: none;
+}
 @media screen and (max-width:600px) {
         .smallFrame{
             height: 80px;

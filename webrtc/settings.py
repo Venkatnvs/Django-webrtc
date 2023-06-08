@@ -32,7 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    #installed apps
+    #Main apps
     "daphne",
     'channels',
     #default
@@ -42,8 +42,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.gis',
+    # 'django.contrib.gis.geoip2',
     #custom apps
     'video',
+    'analytics',
+    #installed apps
+    'rest_framework',
+    'ipware',
+    'geoip2',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'video.context_processors.get_current_username',
             ],
         },
     },
@@ -95,6 +103,11 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://a46b-14-99-167-142.ngrok-free.app'
+]
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -126,6 +139,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+GEOIP_PATH = os.path.join(BASE_DIR, 'geoip')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -135,6 +149,9 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static_root')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
