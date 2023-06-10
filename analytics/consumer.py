@@ -1,5 +1,7 @@
 import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
+import django
+django.setup()
 from channels.db import database_sync_to_async
 from .models import PageView
 
