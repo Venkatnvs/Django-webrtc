@@ -20,7 +20,7 @@ nav{
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 1001;
 }
 nav > #nav_logo {
     display: flex;

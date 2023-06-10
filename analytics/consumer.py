@@ -4,6 +4,7 @@ import django
 django.setup()
 from channels.db import database_sync_to_async
 from .models import PageView
+from datetime import datetime,timezone
 
 class WebrtcRealTime(AsyncJsonWebsocketConsumer):
     async def connect(self):
@@ -25,11 +26,15 @@ class WebrtcRealTime(AsyncJsonWebsocketConsumer):
     @database_sync_to_async 
     def set_as_non_real_time(self):
         try:
+            a = datetime.now(timezone.utc)
             page = PageView.objects.get(pk=self.user_pk ,uuid=self.user_uuid)
+            b = page.timestamp
+            rem = (a-b).total_seconds()
             page.is_active = False
+            page.duration = str(rem)
             page.save()
         except Exception as e:
-            pass
+            print(e)
 
     async def disconnect(self, code):
         await self.channel_layer.group_discard(

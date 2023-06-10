@@ -216,8 +216,10 @@ function getRealTimecont(){
             var response = JSON.parse(xhr.responseText);
             console.log(response)
             response.forEach((data)=>{
-                liHtml = `<li class="list-group-item"><span>${data.country_name}</span><span>${data.count}</span></li>`
-                ulElementRealTime.innerHTML += liHtml
+                if((data.country_name) && (data.country_name!=null)){
+                    liHtml = `<li class="list-group-item"><span>${data.country_name}</span><span>${data.count}</span></li>`
+                    ulElementRealTime.innerHTML += liHtml
+                }
             })
         }
     }

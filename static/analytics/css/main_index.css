@@ -14,6 +14,7 @@ body {
 }
 #main_content{
     margin-top: 66px !important;
+    margin-bottom: 40px !important;
 }
 #map {
     min-height: 400px;
