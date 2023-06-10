@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="{% static 'icons/favicon.ico' %}" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created by venkat" />
+  <title>
+  {% block title %}
+  Analytics Map Chart
+  {% endblock title %}
+    </title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
+  <link rel="stylesheet" href="{% static 'analytics/css/main_index.css' %}">
+  <link rel="stylesheet" href="{% static 'analytics/css/header.css' %}">
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+  {% block css_js_head %}
+    
+  {% endblock css_js_head %}
+</head>
+<body>
+  {% include 'analytics/navbar.html' %}
+  <div id="main_content" class="container">
+  <h2 class="Main_Heading">Analytics</h2>
+    
+    {% block body %}
+        
+    {% endblock body %}
+        
+  </div>
+  {% block js_body %}
+  
+  {% endblock js_body %}
+  <script src="{% static 'analytics/js/main_index.js' %}"></script>
+</body>
+</html>

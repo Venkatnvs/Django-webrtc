@@ -8,6 +8,7 @@ from .models import PageView,GeoLocation
 from django.views.decorators.csrf import csrf_exempt
 import uuid
 from django.db.models import Count
+import datetime
 
 def Pagedata(request):
     pass
@@ -30,7 +31,7 @@ def track_page_view(request):
             uuid = data.get('uuid',uuid.uuid4),
             url = data.get('url',None),
             title = data.get('title',None),
-            duration = data.get('duration',None),
+            duration = data.get('duration',0),
             timestamp = parse_datetime(data.get('timestamp',None)),
             devicetype = data.get('deviceType',None),
             useragent = data.get('userAgent',None),
@@ -57,7 +58,7 @@ def track_page_view(request):
             GeoLocation.objects.create(
                 page = page_view
             )
-        response =  Response({"message": "Got data!"})
+        response =  Response({"message": page_view.pk})
         response.set_cookie('name', 'jujule')
         return response
     return Response({"message": "Hello, world!"})
@@ -109,8 +110,11 @@ def Homepage(request):
 
 @api_view(['GET'])
 def get_cou_ln_lo(request):
-    data = GeoLocation.objects.all()
-    count_data = GeoLocation.objects.values('city').annotate(count=Count('city'))
+    today_date = datetime.date.today()
+    today_date_1 = datetime.date.today()+datetime.timedelta(days=1)
+    last_months_ago =today_date - datetime.timedelta(days=30)
+    data = GeoLocation.objects.filter(page__timestamp__gte=last_months_ago, page__timestamp__lte=today_date_1)
+    count_data = GeoLocation.objects.filter(page__timestamp__gte=last_months_ago, page__timestamp__lte=today_date_1).values('city').annotate(count=Count('city'))
     geoData = []
     for i in data:
         # if i.city == None:
@@ -131,10 +135,18 @@ def get_cou_ln_lo(request):
 
 @api_view(['GET'])
 def get_country(request):
-    count_data = GeoLocation.objects.values('country_name').annotate(count=Count('country_name'))
+    today_date = datetime.date.today()
+    last_months_ago =today_date - datetime.timedelta(days=30)
+    today_date_1 = datetime.date.today()+datetime.timedelta(days=1)
+    count_data = GeoLocation.objects.filter(page__timestamp__gte=last_months_ago, page__timestamp__lte=today_date_1).values('country_name').annotate(count=Count('country_name'))
     return Response(count_data)
 
 @api_view(['GET'])
 def get_device_type(request):
     count_data = GeoLocation.objects.values('page__devicetype').annotate(count=Count('page__devicetype'))
     return Response(count_data)
+
+@api_view(['GET'])
+def Realtime_Country(request):
+    data = GeoLocation.objects.filter(page__is_active=True).values('country_name').annotate(count=Count('country_name'))
+    return Response(data)
