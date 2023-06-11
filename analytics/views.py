@@ -16,8 +16,6 @@ def Pagedata(request):
 @api_view(['GET', 'POST'])
 def track_page_view(request):
     if request.method == 'POST':
-        print(request.session)
-        # if not request.session['uuid']:
         request.session['uuid'] = request.data.get('uuid',uuid.uuid4)
         is_gloc = True
         data = request.data
@@ -94,15 +92,6 @@ def get_user_ip_geolocation(request):
     else:
         ip_address = '106.216.230.181'
     geolocation = get_ip_geolocation(ip_address)
-    # if geolocation:
-    #     city = geolocation['city']
-    #     country = geolocation['country_name']
-    #     latitude = geolocation['latitude']
-    #     longitude = geolocation['longitude']
-    #    # Process and utilize the geolocation data as needed
-    # else:
-    #     city = None
-    #     # Handle the case where geolocation data is not available or an error occurred
     return Response({"message": geolocation})
 
 def Homepage(request):

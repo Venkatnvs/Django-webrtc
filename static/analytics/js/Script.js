@@ -4,6 +4,7 @@ let DeviceType;
 let uuid_send;
 let geoloc;
 let socket;
+let pk_upid;
 function trackPageView() {
   saveVisitorData()
 }
@@ -113,6 +114,7 @@ function saveVisitorData() {
     if (xhr.status === 200) {
       var response = JSON.parse(xhr.responseText);
       console.log(response)
+      pk_upid = response.message;
 
       var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
 
