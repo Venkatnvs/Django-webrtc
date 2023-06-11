@@ -1,0 +1,34 @@
+{% extends 'analytics/base.html' %}
+
+{% block body %}
+    <div id="main_cd" class="row">
+      <div class="Heading">
+        <h5>Users By Country</h5>
+        <p>Last 30 Days</p>
+      </div>
+      <div class="col-md-8 mt-1">
+        <div id="map"></div>
+      </div>
+      <div id="nvs-card-main" class="col-md-4 mt-1">
+        <div class="nvs-card">
+          <!-- <svg id="my_dataviz" width="300" height="100"></svg> -->
+          {% include 'analytics/real_time.html' %}
+        </div>
+        <div class="nvs-card">
+          <canvas style="width: 40%;" width="100px" id="locationChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div id="main_cd" class="row">
+      <div class="Heading">
+        <h5>Device Types</h5>
+      </div>
+      <div class="col-md-6 mt-1">
+        <div class="nvs-card">
+          <canvas style="width: 40%;" width="100px" id="deviceTypeChart"></canvas>
+        </div>
+      </div>
+    </div>
+{% endblock body %}
+
+

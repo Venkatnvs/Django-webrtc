@@ -1,0 +1,72 @@
+header{
+    display: block;
+    margin: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+nav{
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(90deg,rgba(89, 38, 130), rgb(179, 102, 249, .9));
+    background-color: rgba(89, 18, 130);
+    box-shadow: 0px 2px 6px rgba(10, 10, 10, 0.5);
+    justify-content: space-between;
+    margin: 0;
+    padding: 5px 8px;
+    color: white;
+    align-items: center;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1001;
+}
+nav > #nav_logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8px;
+}
+nav > #nav_logo >h3{
+    align-items: center;
+    justify-content: center;
+    justify-self:center;
+}
+nav > #nav_logo> img{
+    height: 100%;
+    max-width: 45px;
+    width: 100%;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+nav > #nav_links{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+nav > #nav_links > a{
+    color: white;
+    text-decoration: none;
+}
+nav > #nav_links > a > p {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    display: contents;
+}
+#signup_link {
+    margin-left: 10px;
+}
+@media screen and (max-width: 600px) {
+    nav > #nav_links > a > p {
+        font-size: 16px;
+    }
+    nav>#nav_logo > h3 {
+        font-size: 18px;
+    }
+}

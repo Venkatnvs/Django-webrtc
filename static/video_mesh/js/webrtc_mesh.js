@@ -6,8 +6,11 @@ const controlBtn = document.getElementById('controls');
 const partCnt = document.getElementById("partc_head_count")
 const screenshareButton = document.getElementById('screenshareButton');
 const switchCamButton = document.getElementById('switchCamButton');
+const grayBtn = document.getElementById("convertGray");
 let statedCallShare=false;
 let mobileDevCh = true;
+const RoomIdfromHtml = JSON.parse(document.getElementById('user_roomid').textContent);
+const UserNamefromHtml = JSON.parse(document.getElementById('user_name').textContent);
 const servers = {
     iceServers: [
       {
@@ -92,7 +95,12 @@ function start() {
 
   // check if "&displayName=xxx" is appended to URL, otherwise alert user to populate
   var urlParams = new URLSearchParams(window.location.search);
-  localDisplayName = urlParams.get('displayName') || prompt('Enter your name', '');
+  if(UserNamefromHtml){
+    localDisplayName = UserNamefromHtml
+  }
+  else{
+    localDisplayName = urlParams.get('displayName') || prompt('Enter your name', '');
+  }
   if(!localDisplayName){
     alert("Please enter your Name")
     location.reload()
@@ -156,17 +164,20 @@ function start() {
 
   // set up local video stream
   if (navigator.mediaDevices.getUserMedia) {
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     navigator.mediaDevices.getUserMedia(constraints)
       .then(stream => {
         localStream = stream;
         localcamVideo.srcObject = stream;
+        localcamVideo.volume = 0;
       }).catch(errorHandler)
 
       // set up websocket and message all existing clients
       .then(() => {
-        serverConnection = new WebSocket('wss://'
+        serverConnection = new WebSocket(ws_scheme+'://'
         + window.location.host
-        + '/ws/webrtc/venkat'
+        + '/ws/webrtc/'
+        + RoomIdfromHtml
         + '/');
         serverConnection.onmessage = gotMessageFromServer;
         serverConnection.onopen = event => {
@@ -377,20 +388,20 @@ screenshareButton.onclick = async () =>{
     } });
     const newVideoTrack = localStream3.getVideoTracks()[0];
     const newAudioTrack = localStream3.getAudioTracks()[0];
-    if(newVideoTrack.kind !== 'video'){
+    if(newVideoTrack && newVideoTrack.kind !== 'video'){
       console.log(newVideoTrack.kind)
     }
-    if(newAudioTrack.kind !== 'audio'){
+    if(newAudioTrack && newAudioTrack.kind !== 'audio'){
       console.log(newAudioTrack.kind)
     }
     let allper = Object.keys(peerConnections)
     for(let i=0;i<allper.length;i++){
       // console.log(i,allper)
       peerConnections[allper[i]].pc.getSenders().forEach(async s => {
-        if(s.track && s.track.kind==='video' && newVideoTrack.kind === 'video'){
+        if(s.track && s.track.kind==='video' && newVideoTrack && newVideoTrack.kind === 'video'){
           await s.replaceTrack(newVideoTrack)
         }
-        if(s.track && s.track.kind==='audio' && newAudioTrack.kind === 'audio'){
+        if(s.track && s.track.kind==='audio' && newAudioTrack &&  newAudioTrack.kind === 'audio'){
           await s.replaceTrack(newAudioTrack)
         }
       });
@@ -399,6 +410,7 @@ screenshareButton.onclick = async () =>{
     localcamVideo.srcObject = null;
     localStream = localStream3;
     localcamVideo.srcObject = localStream;
+    localcamVideo.volume = 0;
     statedCallShare = true;
     document.getElementById("screenshareButton_img").src = '/static/video_mesh/icons/stop_screenShare.png'
     localStream3.getVideoTracks()[0].addEventListener('ended',() => {
@@ -422,26 +434,27 @@ let StopScreenShare = async () =>{
   let localStream = await navigator.mediaDevices.getUserMedia(constraints);
   const newVideoTrack = localStream.getVideoTracks()[0];
   const newAudioTrack = localStream.getAudioTracks()[0];
-  if(newVideoTrack.kind !== 'video'){
+  if(newVideoTrack && newVideoTrack.kind !== 'video'){
     console.log(newVideoTrack.kind)
   }
-  if(newAudioTrack.kind !== 'audio'){
-    console.log(newVideoTrack.kind)
+  if(newAudioTrack && newAudioTrack.kind !== 'audio'){
+    console.log(newAudioTrack.kind)
   }
   let allper = Object.keys(peerConnections)
   for(let i=0;i<allper.length;i++){
     // console.log(i,allper)
     peerConnections[allper[i]].pc.getSenders().forEach(async s => {
-      if(s.track && s.track.kind==='video' && newVideoTrack.kind === 'video'){
+      if(s.track && s.track.kind==='video' && newVideoTrack &&  newVideoTrack.kind === 'video'){
         await s.replaceTrack(newVideoTrack)
       }
-      if(s.track && s.track.kind==='audio' && newAudioTrack.kind === 'audio'){
+      if(s.track && s.track.kind==='audio' && newAudioTrack &&  newAudioTrack.kind === 'audio'){
         await s.replaceTrack(newAudioTrack)
       }
     });
   }
   console.log(localStream)
   localcamVideo.srcObject = localStream;
+  localcamVideo.volume = 0;
   if(!micChof){
     let audioTrack = localStream.getTracks().find(track => track.kind === 'audio')
     audioTrack.enabled = false
@@ -466,25 +479,26 @@ switchCamButton.onclick = async () => {
   localStream = await navigator.mediaDevices.getUserMedia(constraints);
   const newVideoTrack = localStream.getVideoTracks()[0];
   const newAudioTrack = localStream.getAudioTracks()[0];
-  if(newVideoTrack.kind !== 'video'){
+  if(newVideoTrack && newVideoTrack.kind !== 'video'){
     console.log(newVideoTrack.kind)
   }
-  if(newAudioTrack.kind !== 'audio'){
-    console.log(newVideoTrack.kind)
+  if(newAudioTrack && newAudioTrack.kind !== 'audio'){
+    console.log(newAudioTrack.kind)
   }
   let allper = Object.keys(peerConnections)
   for(let i=0;i<allper.length;i++){
     // console.log(i,allper)
     peerConnections[allper[i]].pc.getSenders().forEach(async s => {
-      if(s.track && s.track.kind==='video' && newVideoTrack.kind === 'video'){
+      if(s.track && s.track.kind==='video' && newVideoTrack &&  newVideoTrack.kind === 'video'){
         await s.replaceTrack(newVideoTrack)
       }
-      if(s.track && s.track.kind==='audio' && newAudioTrack.kind === 'audio'){
+      if(s.track && s.track.kind==='audio' && newAudioTrack &&  newAudioTrack.kind === 'audio'){
         await s.replaceTrack(newAudioTrack)
       }
     });
   }
   localcamVideo.srcObject = localStream;
+  localcamVideo.volume = 0;
   if(!micChof){
     let audioTrack = localStream.getTracks().find(track => track.kind === 'audio')
     audioTrack.enabled = false
@@ -494,6 +508,73 @@ switchCamButton.onclick = async () => {
     videoTrack.enabled = false
   }
 }
+
+
+grayBtn.onclick = async () =>{
+  // Create a video output element
+  const videoOutput = document.getElementById('local_stream2');
+  let grayScale = new MediaStream();
+  videoOutput.srcObject = grayScale;
+  // Create an empty canvas for rendering
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d',{willReadFrequently:true});
+
+  // Process video frames
+  function processVideoFrame() {
+    // Draw the current video frame onto the canvas
+    ctx.drawImage(localcamVideo, 0, 0, canvas.width, canvas.height);
+
+    // Convert the canvas to an OpenCV Mat object
+    const frame = cv.imread(canvas);
+
+    // Convert the frame to grayscale
+    cv.cvtColor(frame, frame, cv.COLOR_RGBA2GRAY);
+
+    // Render the processed frame onto the canvas
+    cv.imshow(canvas, frame);
+
+    // Convert the canvas back to an image data URL
+    // const imageDataUrl = canvas.toDataURL('image/png');
+    const stream1= canvas.captureStream();
+    // videoOutput.srcObject = stream1;
+    // videoOutput.src = URL.createObjectURL(stream1);
+    // if ('srcObject' in videoOutput) {
+    //   videoOutput.srcObject = stream1;
+    // } else {
+    //   videoOutput.src = URL.createObjectURL(stream1);
+    // }
+            // return;
+    stream1.getTracks().forEach((track) => {
+      grayScale.addTrack(track);
+    });
+    const newVideoTrack = stream1.getVideoTracks()[0];
+    let allper = Object.keys(peerConnections)
+    for(let i=0;i<allper.length;i++){
+      // console.log(i,allper)
+      peerConnections[allper[i]].pc.getSenders().forEach(async s => {
+        if(s.track && s.track.kind==='video' && newVideoTrack &&  newVideoTrack.kind === 'video'){
+          await s.replaceTrack(newVideoTrack)
+        }
+      });
+    }
+
+    // Set the image data URL as the source of the video element
+    // videoOutput.src = imageDataUrl;
+
+    // Clean up
+    frame.delete();
+
+    // Call processVideoFrame recursively to continuously process frames
+    requestAnimationFrame(processVideoFrame);
+  }
+
+  // Start processing video frames
+  processVideoFrame();
+}
+
+
+
+
 
 
 // Taken from http://stackoverflow.com/a/105074/515584

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebRTC Video Chat with Grayscale Filter</title>
+  <style>
+    #localVideo, #remoteVideo {
+      width: 320px;
+      height: 240px;
+    }
+  </style>
+</head>
+<body>
+  <video id="localVideo" autoplay></video>
+  <video id="remoteVideo" autoplay></video>
+  <canvas id="canvas" style="display: none;"></canvas>
+
+  <script>
+    // Get local video element, remote video element, and canvas
+    const localVideo = document.getElementById('localVideo');
+    const remoteVideo = document.getElementById('remoteVideo');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Get local video stream
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        // Set the local video stream as the source for the video element
+        localVideo.srcObject = stream;
+
+        // Play the local video
+        localVideo.play();
+
+        // Create an RTCPeerConnection object
+        const peerConnection = new RTCPeerConnection();
+
+        // Add local video stream to the peer connection
+        stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+
+        // Create an event handler for receiving remote video stream
+        peerConnection.ontrack = event => {
+          // Set the remote video stream as the source for the video element
+          remoteVideo.srcObject = event.streams[0];
+
+          // Play the remote video
+          remoteVideo.play();
+        };
+
+        // Function to apply grayscale filter to video frames
+        function applyGrayscaleFilter() {
+          // Draw video frame onto the canvas
+          ctx.drawImage(localVideo, 0, 0, canvas.width, canvas.height);
+
+          // Apply grayscale filter
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+          function getPixelIndex(x, y, width) {
+            return (y * width + x) * 4;
+        }
+        
+        function getAverageRGB(data, pixelIndex, radius, width, height) {
+            var r = 0, g = 0, b = 0;
+            var count = 0;
+        
+            for (var dx = -radius; dx <= radius; dx++) {
+                for (var dy = -radius; dy <= radius; dy++) {
+                    var nx = Math.min(Math.max(x + dx, 0), width - 1);
+                    var ny = Math.min(Math.max(y + dy, 0), height - 1);
+        
+                    var nIndex = getPixelIndex(nx, ny, width);
+                    r += data[nIndex];
+                    g += data[nIndex + 1];
+                    b += data[nIndex + 2];
+                    count++;
+                }
+            }
+        
+            return {
+                r: Math.round(r / count),
+                g: Math.round(g / count),
+                b: Math.round(b / count)
+            };
+        }
+        
+        var blurRadius = 3; // Adjust the blur radius as needed
+        
+        for (var x = 0; x < localVideo.videoWidth; x++) {
+            for (var y = 0; y < localVideo.videoHeight; y++) {
+                var index = getPixelIndex(x, y, localVideo.videoWidth);
+                var averageRGB = getAverageRGB(data, index, blurRadius, localVideo.videoWidth, localVideo.videoHeight);
+                data[index] = averageRGB.r;           // Red
+                data[index + 1] = averageRGB.g;       // Green
+                data[index + 2] = averageRGB.b;       // Blue
+            }
+        }
+          ctx.putImageData(imageData, 0, 0);
+
+          // Call the function recursively to continuously apply the filter
+          requestAnimationFrame(applyGrayscaleFilter);
+        }
+
+        // Start applying the grayscale filter
+        applyGrayscaleFilter();
+
+        // Add the signaling and peer connection logic here
+
+      })
+      .catch(error => {
+        console.error('Error accessing local video stream:', error);
+      });
+  </script>
+</body>
+</html>
